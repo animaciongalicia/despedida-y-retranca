@@ -23,8 +23,8 @@ const ReportView: React.FC<ReportViewProps> = ({ report, data, onReset }) => {
     const url = window.location.origin;
     const fullMessage = `${text} \n\nPlanea la tuya aquí: ${url}`;
     
-    // Abrir WhatsApp directamente con el mensaje preparado
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(fullMessage)}`;
+    // URL universal para compartir en WhatsApp (abre selector de chat)
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(fullMessage)}`;
     window.open(whatsappUrl, '_blank');
   };
 
@@ -32,7 +32,7 @@ const ReportView: React.FC<ReportViewProps> = ({ report, data, onReset }) => {
     const message = encodeURIComponent(
       `¡Socorro! Soy ${data.name} y necesito ayuda para organizar una despedida en ${data.location} para ${data.peopleCount} personas. Mi nivel de locura deseado es ${data.crazyLevel}. ¡Ayudadme antes de que sea tarde!`
     );
-    // User specified WhatsApp number: 678288284
+    // WhatsApp de la agencia
     window.open(`https://wa.me/34678288284?text=${message}`, '_blank');
   };
 

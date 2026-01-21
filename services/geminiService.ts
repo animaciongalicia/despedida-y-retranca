@@ -3,12 +3,15 @@ import { GoogleGenAI } from "@google/genai";
 import { WizardData, ReportResponse } from "../types";
 
 export const generatePartyReport = async (data: WizardData): Promise<ReportResponse> => {
-  const apiKey = process.env.API_KEY;
-  if (!apiKey) {
-    throw new Error("API Key no configurada. Esto no va ni con empujones.");
+  let ai;
+  try {
+    // Inicialización siguiendo estrictamente la normativa técnica:
+    // Siempre usar process.env.API_KEY. Si falla aquí, es por configuración de entorno en Vercel/Vite.
+    ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  } catch (e) {
+    console.error("Error al inicializar GoogleGenAI:", e);
+    throw new Error("No se pudo conectar con el oráculo. Revisa la configuración de API_KEY.");
   }
-
-  const ai = new GoogleGenAI({ apiKey });
   
   const prompt = `
     Eres un creador de planes de despedidas de soltera y soltero con mucha retranca gallega, sentido del humor, pero con foco en resultados.
@@ -48,16 +51,20 @@ export const generatePartyReport = async (data: WizardData): Promise<ReportRespo
 
     const text = response.text || "El gurú se ha ido de cañas y no ha respondido. Inténtalo de nuevo.";
     
-    // Extract score using regex if possible, or generate one
-    const scoreMatch = text.match(/(\d+)\/100/) || text.match(/Score.*: (\d+)/i) || text.match(/(\d+)\s*$/);
+    // Extracción de puntuación basada en el texto generado
+    const scoreMatch = text.match(/(\d+)\/100/) || text.match(/Score.*: (\d+)/i);
     const scoreVal = scoreMatch ? parseInt(scoreMatch[1]) : 75;
 
     return {
       reportText: text,
       score: isNaN(scoreVal) ? 69 : scoreVal,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Gemini Error:", error);
+    // Si el error es por 'process', es un problema de Vercel/Vite no inyectando la variable al cliente.
+    if (error?.message?.includes('process is not defined') || (typeof process === 'undefined')) {
+      throw new Error("Error de entorno: 'process' no definido. La API_KEY no está llegando al navegador.");
+    }
     throw error;
   }
 };
