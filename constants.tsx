@@ -2,28 +2,28 @@
 import React from 'react';
 
 export const PAIN_POINTS_OPTIONS = [
-  "Nadie se pone de acuerdo con el presupuesto",
+  "Nadie se pone de acuerdo con nada",
   "El novio/a es un mueble y no ayuda",
-  "Hay gente en el grupo que no se soporta",
+  "En el grupo alguno/a ya ni se soporta",
   "Miedo real a acabar en los calabozos",
-  "Pereza máxima de organizar la logística",
-  "Temor a que sea una despedida cutre de manual",
-  "No sabemos qué hacer aparte de beber"
+  "Pereza máxima de organizar",
+  "Temor a que sea una despedida cutre",
+  "No sabemos qué hacer, solo beber"
 ];
 
 export const BENEFITS_OPTIONS = [
   "Tener un plan que no sea un desastre",
-  "Evitar que la gente se queje (misión imposible)",
+  "Evitar quejas en el grupo (imposible)",
   "Que el novio/a no nos deje de hablar",
   "Reírnos un rato antes de la tragedia",
-  "Presumir de que somos los mejores amigos"
+  "Presumir de ser los mejores amigos"
 ];
 
 export const CRAZY_LEVELS = [
   { label: "Misa de Domingo", value: "suave", icon: "😇" },
   { label: "Verbena de Pueblo (con orquesta)", value: "media", icon: "💃" },
   { label: "Proyecto Desfase Gordo", value: "alta", icon: "🔥" },
-  { label: "Mañana no quiero recordar mi nombre", value: "extrema", icon: "💀" }
+  { label: "Mañana no recordar ni los nombres", value: "extrema", icon: "💀" }
 ];
 
 export const PLAN_TYPES = [
@@ -37,27 +37,27 @@ export const PLAN_TYPES = [
 export const FUNNY_QUESTION_OPTIONS = [
   "Tiene paciencia infinita (porque nos aguanta)",
   "Hace una empanada que te mueres",
-  "Es el primero en caer y el último en levantarse",
-  "No sabe decir que no a un chupito de hierbas",
-  "Es un ser de luz (pero solo hasta que se toma el tercer cubata)"
+  "Es el primero en caer y último en levantarse",
+  "No sabe decir que no a un chupito",
+  "Es un ser de luz (hasta que se toma el 3º cubata)"
 ];
 
 export const WAITING_MESSAGES = [
   "Consultando el precio del cubata en Sanxenxo...",
-  "Rezándole al Apóstol Santiago para que no llueva...",
-  "Pidiéndole permiso a la abuela para sacar al novio de paseo...",
-  "Calculando cuántas empanadas caben en vuestro presupuesto...",
-  "Analizando si vuestro nivel de locura es legal en Galicia...",
-  "Buscando un abogado por si acaso acabáis en la prensa...",
+  "Rezándole al Apóstol para que no llueva...",
+  "Pidiéndole permiso a la abuela para...",
+  "Calculando Nº de empanadas caben en el presupuesto...",
+  "Analizando nivel de locura es legal en Galicia...",
+  "Buscando un abogado por si acaso acabáis...",
   "Haciendo un conjuro con queimada para que todo salga bien..."
 ];
 
 export const LOCATIONS = [
   "Sanxenxo (O Miami Galego)",
-  "A Coruña (Donde nadie es forastero)",
-  "Santiago (Para purgar pecados después)",
-  "Vigo (Cuidado con las cuestas y las luces)",
+  "A Coruña (Nadie es forastero)",
+  "Santiago (Para rezarle al Apostol)",
+  "Vigo (Todo cuestas y luces)",
   "Ourense (Sauna natural gratuita)",
   "Oporto (Turisteo, vinos y Duero)",
-  "Otro sitio (Probablemente una aldea perdida)"
+  "Otro sitio (o una aldea perdida)"
 ];

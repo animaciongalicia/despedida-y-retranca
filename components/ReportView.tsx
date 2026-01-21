@@ -12,33 +12,20 @@ const ReportView: React.FC<ReportViewProps> = ({ report, data, onReset }) => {
   const copyToClipboard = async (val: string) => {
     try {
       await navigator.clipboard.writeText(val);
-      alert("¡Enlace y resumen copiado al portapapeles! Pégalo en el grupo de WhatsApp de los pesados.");
+      alert("¡Resumen copiado! Pégalo donde quieras.");
     } catch (err) {
       console.error("Clipboard failed:", err);
     }
   };
 
-  const handleShare = async () => {
+  const handleShare = () => {
     const text = `¡Mirad el plan de despedida que nos han montado para ${data.location}! 🚀 Score: ${report.score}/100.`;
     const url = window.location.origin;
     const fullMessage = `${text} \n\nPlanea la tuya aquí: ${url}`;
     
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Plan de Despedida Top',
-          text: text,
-          url: url,
-        });
-      } catch (err: any) {
-        // Only show fallback if it wasn't a manual cancellation by the user
-        if (err.name !== 'AbortError') {
-          copyToClipboard(fullMessage);
-        }
-      }
-    } else {
-      copyToClipboard(fullMessage);
-    }
+    // Abrir WhatsApp directamente con el mensaje preparado
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(fullMessage)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   const handleWhatsAppAgencia = () => {
@@ -115,12 +102,12 @@ const ReportView: React.FC<ReportViewProps> = ({ report, data, onReset }) => {
             onClick={handleShare}
             className="group flex items-center justify-center gap-4 bg-indigo-600 text-white py-5 rounded-3xl font-black text-lg hover:bg-indigo-700 transition-all shadow-xl hover:shadow-indigo-200 active:scale-95"
           >
-            <i className="fas fa-share-alt text-xl group-hover:rotate-12 transition-transform"></i>
+            <i className="fab fa-whatsapp text-xl group-hover:rotate-12 transition-transform"></i>
             PASAR AL GRUPO
           </button>
 
           <button
-            onClick={() => window.open('https://www.google.com/search?q=mejores+ideas+despedida+soltero+galicia', '_blank')}
+            onClick={() => window.open('https://drive.google.com/file/d/1mdN1yLzH2vitNZtNMX18YCoCfPN4phCa/view?usp=sharing', '_blank')}
             className="flex items-center justify-center gap-4 bg-gray-50 text-gray-600 py-5 rounded-3xl font-bold text-lg hover:bg-gray-100 transition-all border-2 border-gray-100 active:scale-95"
           >
             <i className="fas fa-lightbulb text-pink-400"></i>
