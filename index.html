@@ -16,6 +16,15 @@
         .step-transition {
             transition: all 0.3s ease-in-out;
         }
+        
+        /* Fade animation for transitions */
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 <script type="importmap">
 {
@@ -30,5 +39,7 @@
 </head>
 <body>
     <div id="root"></div>
+    <!-- Carga del módulo principal de la aplicación -->
+    <script type="module" src="index.tsx"></script>
 </body>
 </html>

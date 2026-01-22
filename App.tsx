@@ -37,13 +37,14 @@ const App: React.FC = () => {
       }, 3000);
 
       const fetchReport = async () => {
+        setError(null);
         try {
           const result = await generatePartyReport(wizardData);
           setReport(result);
           setCurrentStep(Step.RESULT);
-        } catch (err) {
+        } catch (err: any) {
           console.error(err);
-          setError("Vaya, parece que Gemini tiene resaca. Inténtalo de nuevo más tarde.");
+          setError(err.message || "Vaya, parece que Gemini tiene resaca o falta la API_KEY en Vercel.");
           setCurrentStep(Step.CONTACT);
         }
       };
@@ -101,9 +102,17 @@ const App: React.FC = () => {
             </div>
 
             {error && (
-              <div className="mb-6 p-4 bg-rose-50 text-rose-600 rounded-2xl font-bold text-sm flex items-center gap-3 border border-rose-100">
-                <i className="fas fa-exclamation-triangle text-lg"></i>
-                {error}
+              <div className="mb-6 p-4 bg-rose-50 text-rose-600 rounded-2xl font-bold text-sm flex flex-col gap-2 border border-rose-100">
+                <div className="flex items-center gap-3">
+                  <i className="fas fa-exclamation-triangle text-lg"></i>
+                  <span>¡Atención!</span>
+                </div>
+                <p className="font-normal">{error}</p>
+                {error.includes("API_KEY") && (
+                  <p className="text-xs bg-rose-100 p-2 rounded mt-1">
+                    Tip: Ve a Vercel -> Settings -> Environment Variables y añade <b>API_KEY</b> con tu valor de Google AI Studio.
+                  </p>
+                )}
               </div>
             )}
 
