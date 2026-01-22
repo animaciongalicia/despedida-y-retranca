@@ -9,30 +9,17 @@ interface ReportViewProps {
 }
 
 const ReportView: React.FC<ReportViewProps> = ({ report, data, onReset }) => {
-  const copyToClipboard = async (val: string) => {
-    try {
-      await navigator.clipboard.writeText(val);
-      alert("¡Resumen copiado! Pégalo donde quieras.");
-    } catch (err) {
-      console.error("Clipboard failed:", err);
-    }
-  };
-
   const handleShare = () => {
-    const text = `¡Mirad el plan de despedida que nos han montado para ${data.location}! 🚀 Score: ${report.score}/100.`;
-    const url = window.location.origin;
-    const fullMessage = `${text} \n\nPlanea la tuya aquí: ${url}`;
-    
-    // URL universal para compartir en WhatsApp (abre selector de chat)
+    const text = `¡Mirad el plan de despedida para ${data.location}! 🚀 Score: ${report.score}/100.`;
+    const fullMessage = `${text} \n\nPlanea la tuya aquí: ${window.location.origin}`;
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(fullMessage)}`;
     window.open(whatsappUrl, '_blank');
   };
 
   const handleWhatsAppAgencia = () => {
     const message = encodeURIComponent(
-      `¡Socorro! Soy ${data.name} y necesito ayuda para organizar una despedida en ${data.location} para ${data.peopleCount} personas. Mi nivel de locura deseado es ${data.crazyLevel}. ¡Ayudadme antes de que sea tarde!`
+      `¡Socorro! Soy ${data.name} y necesito ayuda para organizar una despedida en ${data.location} para ${data.peopleCount} personas. ¡Ayudadme!`
     );
-    // WhatsApp de la agencia
     window.open(`https://wa.me/34678288284?text=${message}`, '_blank');
   };
 
@@ -42,98 +29,80 @@ const ReportView: React.FC<ReportViewProps> = ({ report, data, onReset }) => {
     return 'text-rose-600';
   };
 
+  // Función sencilla para procesar negritas dentro de una línea
+  const formatText = (text: string) => {
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={i} className="font-black text-gray-900">{part.slice(2, -2)}</strong>;
+      }
+      return part;
+    });
+  };
+
   const formattedReport = report.reportText
     .split('\n')
     .map((line, i) => {
       const trimmedLine = line.trim();
-      if (!trimmedLine) return <div key={i} className="h-3" />;
+      if (!trimmedLine) return <div key={i} className="h-4" />;
 
-      // Match markdown-style bold headers: **Header** or 1. **Header**
-      if (trimmedLine.match(/^(\d+\.\s+)?\*\*(.*)\*\*/)) {
+      // Cabeceras (Secciones principales)
+      if (trimmedLine.match(/^(\d+\.\s+)?\*\*(.*)\*\*/) || trimmedLine.startsWith('###')) {
         return (
-          <h3 key={i} className="text-2xl font-black text-pink-600 mt-8 mb-3 border-l-4 border-pink-500 pl-3 leading-tight uppercase tracking-tight">
-            {trimmedLine.replace(/\*\*/g, '').replace(/^\d+\.\s+/, '')}
+          <h3 key={i} className="text-lg font-black text-pink-700 mt-6 mb-2 border-l-4 border-pink-500 pl-3 uppercase tracking-wide">
+            {trimmedLine.replace(/\*\*/g, '').replace(/^#+\s*/, '').replace(/^\d+\.\s+/, '')}
           </h3>
         );
       }
 
-      // Match list items
+      // Elementos de lista
       if (trimmedLine.startsWith('-') || trimmedLine.startsWith('*')) {
         return (
-          <li key={i} className="ml-5 list-none relative mb-2 pl-2">
+          <li key={i} className="ml-5 list-none relative mb-1.5 pl-2 text-base md:text-lg">
             <span className="absolute -left-5 text-pink-500 font-bold">•</span>
-            <span className="font-medium text-gray-700">{trimmedLine.substring(1).trim()}</span>
+            <span className="text-gray-800">{formatText(trimmedLine.substring(1).trim())}</span>
           </li>
         );
       }
 
-      // Regular text
+      // Párrafos normales
       return (
-        <p key={i} className="mb-3 text-gray-700 leading-relaxed font-normal">
-          {trimmedLine.replace(/\*\*/g, '')}
+        <p key={i} className="mb-3 text-gray-800 leading-relaxed text-base md:text-lg">
+          {formatText(trimmedLine)}
         </p>
       );
     });
 
   return (
     <div className="animate-fade-in pb-16">
-      <div className="bg-white rounded-[2.5rem] shadow-2xl p-6 md:p-12 overflow-hidden relative border-t-[12px] border-pink-500">
-        <div className="absolute top-0 right-0 p-8 opacity-10">
-          <i className="fas fa-certificate text-[12rem] text-pink-500 rotate-12"></i>
-        </div>
-
-        <div className="text-center mb-10">
-          <div className="inline-flex flex-col items-center p-8 rounded-full bg-gradient-to-br from-pink-50 to-white border-4 border-pink-100 mb-6 shadow-xl relative z-10">
-            <span className={`text-7xl font-black ${getScoreColor(report.score)} tracking-tighter`}>
-              {report.score}<span className="text-3xl">/100</span>
+      <div className="bg-white rounded-[2rem] shadow-2xl p-6 md:p-10 overflow-hidden relative border-t-8 border-pink-500">
+        
+        <div className="text-center mb-8">
+          <div className="inline-flex flex-col items-center p-6 rounded-full bg-pink-50 border-2 border-pink-100 mb-4 shadow-sm">
+            <span className={`text-5xl font-black ${getScoreColor(report.score)}`}>
+              {report.score}<span className="text-xl">/100</span>
             </span>
-            <div className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mt-2">Nivel de Despedida</div>
           </div>
-          <h2 className="text-4xl font-black text-gray-900 leading-tight">Vuestro Diagnóstico Final</h2>
-          <p className="text-pink-500 font-bold italic mt-2 text-lg">"Porque un marrón compartido es menos marrón"</p>
+          <h2 className="text-2xl font-black text-gray-900 leading-tight">Vuestro Diagnóstico Final</h2>
         </div>
 
-        <div className="text-gray-800 text-lg md:text-xl">
+        <div className="report-content">
            {formattedReport}
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-4">
-          <button
-            onClick={handleShare}
-            className="group flex items-center justify-center gap-4 bg-indigo-600 text-white py-5 rounded-3xl font-black text-lg hover:bg-indigo-700 transition-all shadow-xl hover:shadow-indigo-200 active:scale-95"
-          >
-            <i className="fab fa-whatsapp text-xl group-hover:rotate-12 transition-transform"></i>
-            PASAR AL GRUPO
+        <div className="mt-12 space-y-3">
+          <button onClick={handleShare} className="w-full flex items-center justify-center gap-3 bg-indigo-600 text-white py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-lg active:scale-95">
+            <i className="fab fa-whatsapp"></i> PASAR AL GRUPO
           </button>
 
-          <button
-            onClick={() => window.open('https://drive.google.com/file/d/1mdN1yLzH2vitNZtNMX18YCoCfPN4phCa/view?usp=sharing', '_blank')}
-            className="flex items-center justify-center gap-4 bg-gray-50 text-gray-600 py-5 rounded-3xl font-bold text-lg hover:bg-gray-100 transition-all border-2 border-gray-100 active:scale-95"
-          >
-            <i className="fas fa-lightbulb text-pink-400"></i>
-            GUÍA DE SUPERVIVENCIA
+          <button onClick={handleWhatsAppAgencia} className="w-full flex items-center justify-center gap-3 bg-emerald-500 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-600 transition-all shadow-xl active:scale-105 border-b-4 border-emerald-700">
+            <i className="fab fa-whatsapp text-2xl"></i> PEDIR SOCORRO AGENCIA
           </button>
 
-          <button
-            onClick={handleWhatsAppAgencia}
-            className="group flex items-center justify-center gap-4 bg-emerald-500 text-white py-6 rounded-3xl font-black text-xl hover:bg-emerald-600 transition-all shadow-2xl hover:shadow-emerald-200 active:scale-105 border-b-4 border-emerald-700"
-          >
-            <i className="fab fa-whatsapp text-3xl group-hover:scale-110 transition-transform"></i>
-            PEDIR SOCORRO AGENCIA
-          </button>
-
-          <button
-            onClick={onReset}
-            className="mt-4 flex items-center justify-center gap-2 text-gray-400 text-sm py-4 font-black hover:text-pink-500 transition-colors uppercase tracking-[0.2em]"
-          >
-            <i className="fas fa-trash-alt"></i>
-            BORRAR TODO Y HUIR
+          <button onClick={onReset} className="w-full text-gray-400 text-xs py-4 font-bold hover:text-pink-500 transition-colors uppercase tracking-widest">
+            <i className="fas fa-trash-alt mr-2"></i> BORRAR Y HUIR
           </button>
         </div>
-      </div>
-      
-      <div className="mt-10 text-center text-gray-400 text-sm font-bold uppercase tracking-widest">
-        <p>Retranca Gallega &bull; Certificada &bull; Cero Filtros</p>
       </div>
     </div>
   );
