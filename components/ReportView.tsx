@@ -23,6 +23,11 @@ const ReportView: React.FC<ReportViewProps> = ({ report, data, onReset }) => {
     window.open(`https://wa.me/34678288284?text=${message}`, '_blank');
   };
 
+  const handleHerramientas = () => {
+    // Aquí puedes cambiar la URL por tu enlace real de Google Drive
+    window.open('https://drive.google.com/drive/folders/TU_ID_DE_DRIVE_AQUI', '_blank');
+  };
+
   const getScoreColor = (score: number) => {
     if (score > 80) return 'text-emerald-600';
     if (score > 50) return 'text-amber-600';
@@ -93,6 +98,10 @@ const ReportView: React.FC<ReportViewProps> = ({ report, data, onReset }) => {
         <div className="mt-12 space-y-3">
           <button onClick={handleShare} className="w-full flex items-center justify-center gap-3 bg-indigo-600 text-white py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-lg active:scale-95">
             <i className="fab fa-whatsapp"></i> PASAR AL GRUPO
+          </button>
+
+          <button onClick={handleHerramientas} className="w-full flex items-center justify-center gap-3 bg-slate-700 text-white py-4 rounded-2xl font-bold hover:bg-slate-800 transition-all shadow-lg active:scale-95">
+            <i className="fas fa-toolbox"></i> HERRAMIENTAS ORGANIZADOR
           </button>
 
           <button onClick={handleWhatsAppAgencia} className="w-full flex items-center justify-center gap-3 bg-emerald-500 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-600 transition-all shadow-xl active:scale-105 border-b-4 border-emerald-700">
