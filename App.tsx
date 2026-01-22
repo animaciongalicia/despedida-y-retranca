@@ -110,7 +110,7 @@ const App: React.FC = () => {
                 <p className="font-normal">{error}</p>
                 {error.includes("API_KEY") && (
                   <p className="text-xs bg-rose-100 p-2 rounded mt-1">
-                    Tip: Ve a Vercel -> Settings -> Environment Variables y añade <b>API_KEY</b> con tu valor de Google AI Studio.
+                    Tip: Ve a Vercel {"->"} Settings {"->"} Environment Variables y añade <b>API_KEY</b> con tu valor de Google AI Studio.
                   </p>
                 )}
               </div>
