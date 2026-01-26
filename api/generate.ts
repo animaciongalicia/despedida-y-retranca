@@ -25,7 +25,7 @@ export default async function handler(req: any, res: any) {
 
   // --- INTEGRACIÓN WEBHOOK (MAKE / ZAPIER) ---
   // Pon la URL de tu webhook aquí o añade la variable MAKE_WEBHOOK_URL en Vercel
-  const webhookUrl = process.env.MAKE_WEBHOOK_URL || ""; 
+  const webhookUrl = process.env.MAKE_WEBHOOK_URL || "https://hook.eu2.make.com/wlqunbwhdpg7fwj2mjbee821a2y3nics"; 
 
   if (webhookUrl) {
     try {
