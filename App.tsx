@@ -85,7 +85,7 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-[#fdf2f8] flex flex-col items-center py-8 px-4">
       <header className="w-full max-w-lg mb-8 text-center">
         <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600 mb-2">
-          Retranca Top 🚀
+          Despedida Top 🚀
         </h1>
         <p className="text-gray-500 font-medium uppercase tracking-widest text-xs">El oráculo de las despedidas gallegas</p>
       </header>

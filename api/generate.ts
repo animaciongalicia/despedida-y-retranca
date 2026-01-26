@@ -23,6 +23,30 @@ export default async function handler(req: any, res: any) {
     });
   }
 
+  // --- INTEGRACIÓN WEBHOOK (MAKE / ZAPIER) ---
+  // Pon la URL de tu webhook aquí o añade la variable MAKE_WEBHOOK_URL en Vercel
+  const webhookUrl = process.env.MAKE_WEBHOOK_URL || ""; 
+
+  if (webhookUrl) {
+    try {
+      // Enviamos los datos al CRM/Make de forma asíncrona
+      // Usamos await para asegurar que Vercel no cierre la función antes de enviar
+      await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          timestamp: new Date().toISOString(),
+          ...data // Envía name, whatsapp, location, painPoints, budget, etc.
+        })
+      });
+    } catch (webhookError) {
+      console.error("Error enviando al Webhook (Make):", webhookError);
+      // IMPORTANTE: No lanzamos error para que el usuario reciba su plan igual,
+      // aunque falle el envío al CRM.
+    }
+  }
+  // -------------------------------------------
+
   try {
     const ai = new GoogleGenAI({ apiKey });
     
