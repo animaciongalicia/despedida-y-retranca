@@ -25,7 +25,7 @@ const ReportView: React.FC<ReportViewProps> = ({ report, data, onReset }) => {
 
   const handleHerramientas = () => {
     // Aquí puedes cambiar la URL por tu enlace real de Google Drive
-    window.open('https://drive.google.com/drive/folders/TU_ID_DE_DRIVE_AQUI', '_blank');
+    window.open('https://drive.google.com/drive/folders/1yxlvQNeALqPu6YUdvM90m7j3ypWQ2Mas?usp=share_link', '_blank');
   };
 
   const getScoreColor = (score: number) => {
