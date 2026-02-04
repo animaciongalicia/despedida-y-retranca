@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { WizardData, Step, ReportResponse } from './types';
 import StepRenderer from './components/StepRenderer';
 import ReportView from './components/ReportView';
@@ -151,6 +152,8 @@ const App: React.FC = () => {
       <footer className="mt-12 text-gray-400 text-xs font-bold uppercase tracking-[0.3em] pb-10">
         &copy; {new Date().getFullYear()} DespedidasGalicia.es &bull;
       </footer>
+
+      <Analytics />
     </div>
   );
 };
